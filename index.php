@@ -1,14 +1,22 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
 session_start();
 require("php/connection.php");
 require("php/functions.php");
 
 $user = checkSession($con);
 
-$articles = $con->query("SELECT * FROM articles ORDER BY id DESC LIMIT 12")->fetch_all(MYSQLI_ASSOC);
+$articleCount = $con->query("SELECT COUNT(*) FROM articles")->fetch_row()[0];
+
+$page = isset($_GET['page']) ? $_GET['page'] : 1;
+$page = $page <= 0 ? 1 : $page;
+$offset = ($page - 1) * 12;
+
+$query = $con->prepare("SELECT * FROM articles ORDER BY id DESC LIMIT 12 OFFSET ?");
+$query->bind_param("i", $offset);
+$query->execute();
+$result = $query->get_result();
+
+$articles = $result->fetch_all(MYSQLI_ASSOC);
 
 $con->close();
 ?>
@@ -26,6 +34,10 @@ $con->close();
     getNav(getRole($user));
     ?>
     <div class="container">
+        <div id="pagebuttons">
+                <button <?php echo $page - 1 <=0 ? 'disabled' : ''; ?> onClick="location.href='index.php?page=<?php echo $page -1; ?>'">Previous</button>
+                <button <?php echo $offset + 12 >= $articleCount ? 'disabled' : ''; ?> onClick="location.href='index.php?page=<?php echo $page + 1; ?>'">Next</button>
+        </div>
         <main class="index">
             <?php
             foreach($articles as $article){

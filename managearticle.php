@@ -23,18 +23,27 @@ if(isset($_GET['id'])){
     if($result->num_rows > 0){
 
         $editarticle = $result->fetch_assoc();
-        $con->close();
         if(!($editarticle['ownerID'] == $user['id'] || isAdmin(getRole($user)))){
             header("location: index.php");
             exit;
         }
+        if(isset($_GET['delete']) && $_GET['delete'] == 'true'){
+
+            $query = $con->prepare("DELETE FROM articles WHERE id = ?");
+            $query->bind_param("i", $id);
+            $query->execute();
+
+            header("location: index.php");
+            exit;
+        }
+
     }
 }
 else if($_SERVER["REQUEST_METHOD"] == "POST"){
 
     $title = $_POST['title'];
     $article = $_POST['article'];
-    $ownerID = $user['id'];
+    $ownerID = $_POST['ownerID'];
 
     if( isset($_POST['id']) && ($ownerID == $user['id'] || isAdmin(getRole($user))) ){
         $id = $_POST['id'];
@@ -79,12 +88,13 @@ $role = getRole($user);
     <?php getNav($role);?>
     <div class="container">
         <main class="managearticle">
-            <form action="managearticle.php.php" method="post">
+            <form action="managearticle.php" method="post">
                 <?php
                 if(isset($editarticle)){
                     $title = $editarticle['title'];
                     $article = $editarticle['article'];
                     echo "<input type=\"hidden\" name=\"id\" value=\"$id\">
+
                     <input type=\"text\" placeholder=\"Title\" value=\"$title\" name=\"title\">
                     <textarea name=\"article\" placeholder=\"Put your entire article here, the area can be resized if prefered\">$article</textarea>
                     <input type=\"submit\" value=\"Save and update\">";

@@ -87,6 +87,7 @@ main {
     gap: 10px;
     width: 50%;
     height: 100vh;
+    margin-top: 0;
 }
 .index div {
     text-align: center;
@@ -116,6 +117,30 @@ main {
 .index a:hover{
     color: rgb(24, 177, 24);
 }
+
+#pagebuttons{
+    margin-left: 5%;
+    margin-top: 1vh;
+    display: flex;
+    width: 50%;
+    justify-content: space-between;
+    align-items: center;
+    height: 5vh;
+}
+#pagebuttons button{
+    border:none;
+    border-radius: 10px;
+    height: 5vh;
+    width: 7vw;
+    cursor: pointer;
+    transition: 0.3s ease;
+    background-color: transparent;
+    background-color: white;
+}
+#pagebuttons button:hover {
+    background-color: rgb(204, 204, 204);
+}
+
 /*
     ARTICLE STYLES
 */
@@ -135,7 +160,22 @@ article{
 article h2,article p{
     margin-left: 5%;
     margin-right: 5%;
+}
+article button{
+    border: none;
+    cursor: pointer;
+    transition: 0.3s ease;
+    background-color: transparent;
+    background-color: white;
+    height: 5vh;
+    width: 10vh;
     
+}
+article button:first-of-type{
+    margin-left: 5vh;
+}
+article button:hover{
+    background-color: rgb(204, 204, 204);
 }
 
 /*
@@ -317,6 +357,53 @@ nav {
     height: 72vh;
     resize: vertical;
 }
+/*
+    ADMIN PANEL STYLES
+*/
+
+.adminpanel{
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    margin-top: 1vh;
+    
+}
+.adminpanel div{
+    width: 70%;
+    display: flex;
+    justify-content: space-around;
+    text-align: left;
+    height: 5vh;
+    margin: 0.5vh;
+    background-color: white;
+}
+
+.adminpanel div *{
+    border:none;
+    width: 30%;
+    font-size: 20px;
+}
+.adminpanel button{
+    cursor: pointer;
+    transition: 0.3s ease;
+    background-color: transparent;
+    background-color: white;
+    height: 5vh;
+}
+.adminpanel button:hover {
+    background-color: rgb(204, 204, 204);
+}
+#adminpagebuttons{
+    margin-left: 0.5%;
+    margin-top: 1vh;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 5vh;
+}
+#adminpagebuttons button:hover {
+    background-color: rgb(204, 204, 204);
+}
 
 @media only screen and (max-width: 750px) {
     /* 
@@ -362,6 +449,16 @@ nav {
         width: 100%;
         height: auto;
     }
+
+    #pagebuttons{
+        width: 50%;
+        margin:auto;
+        margin-top: 3%;
+    }
+    #pagebuttons button{
+    width: 15vw;
+}
+    
     /*
         ARTICLE MOBILE STYLES
     */
@@ -428,6 +525,29 @@ nav {
     .hidden {
         display: none !important;
     }
+
+    .adminpanel{
+        flex-direction: column;
+        flex-wrap: wrap;
+    }
+    .adminpanel > div{
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        height: auto;
+        padding-top: 1vh;
+    }
+    .adminpanel > div > *{
+        width: 100%;
+    }
+    #adminpagebuttons > button{
+        width: 30%;
+    }
+    #adminpagebuttons{
+        margin-bottom: 1vh;
+        padding-top: 0;
+    }
+
 }
 /* 
     SCROLLBAR REMOVAL STYLES

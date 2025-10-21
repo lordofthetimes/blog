@@ -43,7 +43,7 @@ else{
                         if($articleData['ownerID'] == $user['id'] || isAdmin(getRole($user))){
                             echo "
                                 <button onclick=\"location.href='managearticle.php?id=$id'\">Edit</button>
-                                <button onclick\"location.href='#'\">Remove</button>";
+                                <button onclick=\"location.href='managearticle.php?id=$id&delete=true'\">Remove</button>";
                         }
                     }
                 }

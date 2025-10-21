@@ -1,21 +1,63 @@
 <?php
 session_start();
-
 require('php/connection.php');
 include('php/functions.php');
 
 $user = checkSession($con);
 if(!isset($user)){
     header("location: index.php");
-    $con->close();
     exit;
 }
 $role = getRole($user);
 if(!isAdmin($role)){
     header("location: index.php");
-    $con->close();
     exit;
 }
+
+if(isset($_GET['changePerms'])){
+    $login = $_GET['changePerms'];
+
+    if(isset($login)){
+        $query = $con->prepare("SELECT * FROM users WHERE login=? limit 1");
+        $query->bind_param("s", $login);
+        $query->execute();
+        $result = $query->get_result();
+        
+        if($result){
+            $changedUser = $result->fetch_assoc();
+            if(!isSuperAdmin(getRole($changedUser))){
+                if(isAdmin(getRole($changedUser))){
+                    $setRole = 'user';
+                }
+                else{
+                    $setRole = 'admin';
+                }
+                $query = $con->prepare("UPDATE users SET role = ? WHERE id = ?");
+                $query->bind_param("si", $setRole, $changedUser['id']);
+                $query->execute();
+                header("location: adminpanel.php");
+                exit;
+            }
+        }
+    }
+}
+$userCount = $con->query("SELECT COUNT(*) FROM users")->fetch_row()[0];
+
+$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+
+$offset = ($page - 1) * 10;
+
+$query = $con->prepare("SELECT * FROM users ORDER BY id ASC LIMIT 10 OFFSET ?");
+$query->bind_param("i", $offset);
+$query->execute();
+$result = $query->get_result();
+if(!$result){
+    echo "No results for selecting users";
+    die;
+}
+$users = $result->fetch_all(MYSQLI_ASSOC); 
+$con->close();
+
 ?>
 <!DOCTYPE html>
 <html lang="pl">
@@ -24,10 +66,45 @@ if(!isAdmin($role)){
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <title>Create new article</title>
+    <title>Admin Panel</title>
 </head>
 <body>
     <?php getNav($role);?>
+    <div class="container">
+        <main class="adminpanel">
+            <?php 
+                foreach($users as $user) {
+                $login = $user['login'];
+                $userRole = $user['role'];
+                ?>
+                <div>
+                    <span>Login : <?php echo $login; ?></span>
+                    <span>Role : <?php echo $userRole; ?></span>
+                    <?php
+                        if(!isSuperAdmin($userRole)){
+                            ?>
+                            <button onClick="location.href='adminpanel.php?changePerms=<?php echo $login; ?>'">
+                                <?= isAdmin($userRole) ? "Remove admin" : "Add admin"; ?>
+                            </button>
+                            <?php
+                        }
+                        else{
+                            ?>
+                            <button>Cannot change</button>
+                            <?php
+                        }
+                    ?>
+                </div>
+            <?php 
+            } 
+            ?>
+            <div id="adminpagebuttons">
+                <button <?php echo $page - 1 <=0 ? 'disabled' : ''; ?> onClick="location.href='adminpanel.php?page=<?php echo $page -1; ?>'">Previous</button>
+                <button <?php echo $offset + 10 >= $userCount ? 'disabled' : ''; ?> onClick="location.href='adminpanel.php?page=<?php echo $page + 1; ?>'">Next</button>
+            </div>
+        </main>
+    </div>
+            
     <?php getFooter($role);?>
 </body>
 </html>
