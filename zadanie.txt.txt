@@ -1,0 +1,10 @@
+rejestracja i logowanie
+
+administrator i uzytkownik
+
+uzytkownik moze dodawac artykuly oraz edytowac i usuwac swoje artykuly
+
+super administrator nieusuwalny
+
+administrator moze dodawac, usuwac i edytowac artykuly, oraz dodawac/usuwac uprawnienia administratora innym uzytkownikom
+

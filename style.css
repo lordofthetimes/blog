@@ -1,0 +1,465 @@
+/* 
+MAIN STYLES STYLES 
+*/
+
+html,body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    overflow-y: scroll;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    scroll-behavior: smooth;
+}
+
+div {
+    height: 80%;
+}
+
+.container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    background-color: #f9f9f9;
+}
+
+main {
+    min-height: 85vh;
+    margin-left: 5%;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-content: space-around;
+    align-items: center;
+}
+/*
+    LOGIN STYLES
+*/
+#login{
+    position: absolute;
+    top: 50vh;
+    left: 50vw;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    height: 50vh;
+    width: 25vw;
+    justify-content: center;
+    align-items: center;
+}
+#login > *{
+    border:none;
+    border-radius: 10px;
+}
+#login input{
+    font-size: 17px;
+    height: 5vh;
+    width: 15vw;
+    margin-bottom: 1vh;
+}
+#login input[type="submit"]{
+    width: 15.5vw; 
+}
+#login input:focus{
+    border: 1px solid black;
+}
+#login button{
+    font-size: 17px;
+    border:none;
+    border-radius: 10px;
+    width: 15.5vw; 
+    height: 5vh;
+    margin-bottom: 1vh;
+}
+#logincontainer{
+    height: 100vh;
+    width: 100vw;
+}
+/*
+    INDEX STYLES
+*/
+.index {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 10px;
+    width: 50%;
+    height: 100vh;
+}
+.index div {
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    flex-direction: column;
+    min-width: 0;
+    min-height: 0;
+    background-color: white;
+    height: 26vh;
+}
+.index p{
+    padding: 0;
+    margin: 0;
+    height: 19vh;
+}
+.index > div > h3{
+    height: 5vh;
+}
+
+.index a{
+
+    transition: ease-in-out 0.3s;
+    color: black;
+}
+.index a:hover{
+    color: rgb(24, 177, 24);
+}
+/*
+    ARTICLE STYLES
+*/
+.article{
+    margin-top: 2%;
+    height: auto;
+    margin-bottom: 2%;
+    align-content: flex-start;
+}
+
+article{
+    min-height: 20vh;
+    width: 60vw;
+    height: auto;
+    background-color: white;
+}
+article h2,article p{
+    margin-left: 5%;
+    margin-right: 5%;
+    
+}
+
+/*
+    SHADOW AND TRANSITION STYLES FOR INDEX AND ARTICLE
+*/
+.index div, article{
+    transition: ease-in-out 0.5s;
+}
+
+/*
+    CONTACT STYLES
+*/
+.contact{
+    margin-top: 10%;
+    height: 60vh;
+    display: flex;
+    flex-direction: row;
+    margin-left: 5%;
+    align-items: center;
+    justify-content: space-around;
+}
+.contact > div{
+    height: 100%;
+    width: 30%;
+}
+.contact form{
+    height: 95%;
+    width: 30%;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+.contact input, .contact textarea{
+    height: 5%;
+    margin-bottom: 5%;
+    font-size: 16px;
+    width: 100%;
+}
+.contact textarea{
+    height: 15%;
+    resize: none;
+}
+.contact button[type="submit"]{
+    height: 7%;
+    background-color: black;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: ease-in-out 0.5s;
+    border-radius: 10px;
+}
+.contact a {
+    color: #000;
+}
+
+
+
+
+ul {
+    margin-left: 15%;
+    list-style-type: none;
+}
+
+
+
+
+/*
+    FOOTER STYLES
+*/
+footer {
+    height: 25vh;
+    width: 100%;
+    background-color: rgb(0, 0, 0);
+    color: white;
+    display: flex;
+    align-content: center;
+}
+footer>ul li:first-child {
+    font-size: 20px;
+}
+footer span{
+    display: block;
+    width: 40px;
+    height: 2px;
+    margin-bottom: 10px;
+    background-color: rgb(24, 177, 24);
+}
+footer>ul li:first-child:hover {
+    color: white
+}
+footer a {
+    text-decoration: none;
+    color: white;
+    transition: ease-in-out 0.5s;
+}
+
+footer a:hover {
+    transition: ease-in-out 0.5s;
+    color: rgb(24, 177, 24);
+}
+footer h1{
+    margin-left: 15%;
+}
+/*
+    NAV STYLES
+*/
+nav {
+    display: flex;
+    position: relative;
+    padding: 0;
+}
+#logo {
+    height: 100px;
+    width: 100px;
+}
+.nav-buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    width: 100%;
+    height: auto;
+    background-color: white;
+}
+
+.nav-buttons button {
+    background-color: transparent;
+    border: none;
+    color: #000;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s ease;
+    height: 13.5vh;
+    width: 10%;
+}
+
+.nav-buttons button:hover {
+    background-color: rgb(204, 204, 204);
+}
+#hamburger, #x {
+    display: none;
+    order: 10;
+    align-self: flex-end;
+}
+
+/*
+ EDIT/CREATE ARTICLE STYLE
+*/
+
+.createarticle{
+    height: auto;
+    width: 100%;
+    margin: auto;
+    margin-top: 5vh;
+    margin-bottom: 5vh;
+}
+.createarticle form{
+    height: auto;
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    text-align: start;
+    justify-tracks: start;
+}
+.createarticle *{
+    border:none;
+    border-radius: 10px;
+}
+.createarticle input{
+    
+    height: 4.8vh;
+    margin-bottom: 0.8vh;
+}
+.createarticle input[type="submit"]{
+    width: 10%;
+}
+.createarticle textarea{
+    margin-bottom: 0.8vh;
+    height: 72vh;
+    resize: vertical;
+}
+
+@media only screen and (max-width: 750px) {
+    /* 
+    MAIN MOBILE STYLES 
+    */
+    .index{
+        margin-top: 2vh;
+    }
+    main {
+        margin: auto;
+        width: 100%;
+    }
+    .container {
+        height: auto;
+    }
+    /*
+        LOGIN MOBILE STYLES
+    */
+    #login{
+        width: 80vw;
+    }
+    #login input{
+        width: 60vw;
+    }
+    #login input[type="submit"]{
+        width: 60.5vw; 
+    }
+    #login button{
+        width: 60vw;
+    }
+    /*
+        INDEX MOBILE STYLES
+    */
+    .index {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        height: auto;
+        margin-bottom: 5vh;
+    }
+
+    .index div {
+        width: 100%;
+        height: auto;
+    }
+    /*
+        ARTICLE MOBILE STYLES
+    */
+    .article{
+        margin-top: 7%;
+        align-content: space-around;
+    }
+    article{
+        width: 90%;
+        min-height: 80vh;
+    }
+    /*
+        FOOTER MOBILE STYLES
+    */
+    footer {
+        flex-direction: column;
+        height: auto;
+    }
+    /*
+        nav MOBILE STYLES
+    */
+    nav{
+        position: relative;
+    } 
+    .nav-buttons {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        position: fixed;
+        width: 80%;
+        height: 100vh;
+        display: none;
+        box-shadow: 0 0 0 600vmax rgba(0, 0, 0, 0.6);
+        z-index: 10;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+    .nav-buttons button {
+        width: 100%;
+        height: 5%;
+    }
+    #x, #hamburger {
+        z-index: 1000;
+        position: absolute;
+    }
+    #hamburger {
+        display: block;
+        top: 20px;
+        right: 20px;
+        height: 50px;
+        width: 50px;
+    }
+    #x {
+        top: 10px;
+        right: 10px;
+        height: 25px;
+        width: 25px;
+    }
+    .show {
+        display: block !important;
+    }
+    .hidden {
+        display: none !important;
+    }
+}
+/* 
+    SCROLLBAR REMOVAL STYLES
+*/
+::-webkit-scrollbar {
+    display: none;
+}
+/*
+    SCROLL TO TOP BUTTON STYLES
+*/
+#scroll {
+  display: none;
+  position: fixed;
+
+  bottom: 20px;
+  right: 30px;
+  z-index: 10;
+  border: none;
+  background-color: rgba(24, 177, 24, 0.541); 
+  color: white;
+  cursor: pointer;
+  padding: 15px;
+  border-radius: 10px;
+  font-size: 25px;
+  font-weight: 900;
+  transition: ease-in-out 0.3s;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  text-align: auto;
+}
+
+#scroll:hover {
+  background-color: #118d00; /* Add a dark-grey background on hover */
+}
