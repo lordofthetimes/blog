@@ -3,7 +3,8 @@ session_start();
 require("php/connection.php");
 include("php/functions.php");
 if(!isset($con)){
-
+    echo "Database connection error";
+    exit;
 }
 if($_SERVER['REQUEST_METHOD'] == "POST"){
     $name = $_POST['fname'];
@@ -20,21 +21,29 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
             die;
         }
 
-        $loginExists = mysqli_query($con,"select * from users where login='$login' limit 1");
-        if($loginExists && mysqli_num_rows($loginExists) > 0){
+        $query = $con->prepare("SELECT * FROM users WHERE login=? LIMIT 1");
+        $query->bind_param("s", $login);
+        $query->execute();
+        $loginExists = $query->get_result();
+
+        if($loginExists && $loginExists->num_rows > 0){
+            $con->close();
             echo '<script>alert("User with login '.$login.' already exists. Please try a different one!");</script>';
-            mysqli_close($con);
             die;
         }
 
-        mysqli_query($con,"insert into users (login,password,role) values ('$login','$password','user')");
-        $result = mysqli_query($con,"select * from users where login='$login' and password='$password' limit 1");
+        $query = $con->prepare("INSERT INTO users (login,password,role) VALUES (?,?, 'user')");
+        $query->bind_param("ss", $login, $password);
+        $query->execute();
 
-        $row = mysqli_fetch_assoc($result);
-        $id = $row['id'];
+        $query = $con->prepare("SELECT * FROM users WHERE login=? AND password=? LIMIT 1");
+        $query->bind_param("ss", $login, $password);
+        $query->execute();
+        $id = $query->get_result()->fetch_assoc()['id'];
+
 
         // mysqli_query($con,"insert into user_data (userid,name,surname,pfp) values ('$id','$name','$surname','default.png')");
-        mysqli_close($con);
+        $con->close();
         session_start();
         header("Location: login.php");
         die;

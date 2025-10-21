@@ -5,13 +5,16 @@ require('php/connection.php');
 include('php/functions.php');
 
 $user = checkSession($con);
-
 if(!isset($user)){
     header("location: index.php");
+    $con->close();
+    exit;
 }
 $role = getRole($user);
 if(!isAdmin($role)){
     header("location: index.php");
+    $con->close();
+    exit;
 }
 ?>
 <!DOCTYPE html>

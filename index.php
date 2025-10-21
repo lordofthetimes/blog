@@ -1,15 +1,16 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 session_start();
 require("php/connection.php");
 require("php/functions.php");
 
 $user = checkSession($con);
- 
-$result = mysqli_query($con, "SELECT * FROM ARTICLES ORDER BY id DESC LIMIT 12");
-if($result){
-    $articles = mysqli_fetch_all($result, MYSQLI_ASSOC);
-}
-mysqli_close($con);
+
+$articles = $con->query("SELECT * FROM articles ORDER BY id DESC LIMIT 12")->fetch_all(MYSQLI_ASSOC);
+
+$con->close();
 ?>
 <!DOCTYPE html>
 <html lang="pl">

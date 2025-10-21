@@ -285,14 +285,14 @@ nav {
  EDIT/CREATE ARTICLE STYLE
 */
 
-.createarticle{
+.managearticle{
     height: auto;
     width: 100%;
     margin: auto;
     margin-top: 5vh;
     margin-bottom: 5vh;
 }
-.createarticle form{
+.managearticle form{
     height: auto;
     width: 80%;
     display: flex;
@@ -300,19 +300,19 @@ nav {
     text-align: start;
     justify-tracks: start;
 }
-.createarticle *{
+.managearticle *{
     border:none;
     border-radius: 10px;
 }
-.createarticle input{
+.managearticle input{
     
     height: 4.8vh;
     margin-bottom: 0.8vh;
 }
-.createarticle input[type="submit"]{
+.managearticle input[type="submit"]{
     width: 10%;
 }
-.createarticle textarea{
+.managearticle textarea{
     margin-bottom: 0.8vh;
     height: 72vh;
     resize: vertical;

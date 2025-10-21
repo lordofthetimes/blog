@@ -1,23 +1,35 @@
 <?php
 session_start();
-    require("php/connection.php");
-    if(!isset($con)){
+require("php/connection.php");
+if(!isset($con)){
         echo "Database connection error";
-    }else if($_SERVER["REQUEST_METHOD"] == "POST"){
-        $login = $_POST["login"];
-        $password = $_POST["password"];
-        if(isset($con) && isset($password) && isset($login)){
-            $result = mysqli_query($con,"select * from users where login='$login' and password='$password' limit 1");
-            if($result && mysqli_num_rows($result) > 0){
-                $_SESSION["user_id"] = mysqli_fetch_assoc($result)["id"];
-                echo "".$_SESSION["user_id"];
-                header("location: index.php");
-            }
-            else{
-                echo "Login or password is not correct";
-            }
+    exit;
+}
+if($_SERVER["REQUEST_METHOD"] == "POST"){
+    $login = $_POST["login"];
+    $password = $_POST["password"];
+    if(empty($login) || empty($password)){
+        echo "Please fill in both fields";
+        exit;
+    }
+    if(isset($con) && isset($password) && isset($login)){
+
+        $query = $con->prepare("SELECT * FROM users WHERE login=? AND password=? LIMIT 1");
+        $query->bind_param("ss", $login, $password);
+        $query->execute();
+        $result = $query->get_result();
+
+        if($result && $result->num_rows > 0){
+            $_SESSION["user_id"] = $result->fetch_assoc()["id"];
+            $con->close();
+            header("location: index.php");
+            exit;
+        }
+        else{
+            echo "Login or password is not correct";
         }
     }
+}
 ?>
 <!DOCTYPE html>
 <html lang="pl">

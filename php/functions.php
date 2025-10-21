@@ -12,7 +12,7 @@ function getNav($role){
         echo "<button onclick=\"location.href='adminpanel.php'\">Admin Panel</button>";
     }
     if(isUser($role)){
-        echo "<button onclick=\"location.href='createarticle.php'\">Create article</button>
+        echo "<button onclick=\"location.href='managearticle.php'\">Create article</button>
         <button onclick=\"location.href='logout.php'\">Log out</button>";
     }
     else{
@@ -45,21 +45,29 @@ function getFooter(){
 function checkSession($con){
     if(isset($_SESSION["user_id"])){
         $id = $_SESSION["user_id"];
-        $result = mysqli_query($con,"SELECT * FROM users WHERE id = '$id';"); // INNER JOIN user_data ON user_data.userID = users.ID 
+        
+        $query = $con->prepare("SELECT * FROM users WHERE id = ?");
+        $query->bind_param("i", $id);
+        $query->execute();
+        $result = $query->get_result(); // INNER JOIN user_data ON user_data.userID = users.ID
+
         if($result && mysqli_num_rows($result) > 0){
-            return mysqli_fetch_assoc($result);
+            return $result->fetch_assoc();
         }
     }
 }
 function isAdmin($role){
     return $role == "admin" ||  isSuperAdmin($role);
 }
+
 function isSuperAdmin($role){
     return $role == "superadmin";
 }
+
 function isUser($role){
     return $role == 'user' || isAdmin($role);
 }
+
 function getRole($user){
     if(isset($user['role'])){
         return $user['role'];

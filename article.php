@@ -6,16 +6,18 @@ require("php/functions.php");
 $user = checkSession($con);
 if(isset($_GET['id'])){
     $id = $_GET['id'];
-    $articleResult = mysqli_query($con, "SELECT * FROM ARTICLES WHERE id=$id");
+    
+    $query = $con->prepare("SELECT * FROM articles WHERE id = ?");
+    $query->bind_param("i", $id);
+    $query->execute();
+    $articleResult = $query->get_result();
+
     if($articleResult){
-        $articleData = mysqli_fetch_assoc($articleResult);
+        $articleData = $articleResult->fetch_assoc();
     }
 }
 else{
-    $result = mysqli_query($con, "SELECT * FROM ARTICLES ORDER BY id DESC LIMIT 1");
-    if($result){
-        $articleData = mysqli_fetch_assoc($result);
-    }
+    $articleData = $con->query("SELECT * FROM articles ORDER BY id DESC LIMIT 1")->fetch_assoc();
 }
 ?>
 <!DOCTYPE html>
@@ -40,7 +42,7 @@ else{
                     if (isset($user)) {
                         if($articleData['ownerID'] == $user['id'] || isAdmin(getRole($user))){
                             echo "
-                                <button onclick=\"location.href='createarticle.php?id=$id'\">Edit</button>
+                                <button onclick=\"location.href='managearticle.php?id=$id'\">Edit</button>
                                 <button onclick\"location.href='#'\">Remove</button>";
                         }
                     }

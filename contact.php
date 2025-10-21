@@ -4,6 +4,7 @@ require("php/connection.php");
 require("php/functions.php");
 
 $user = checkSession($con);
+$con->close();
 ?>
 <!DOCTYPE html>
 <html lang="en">
