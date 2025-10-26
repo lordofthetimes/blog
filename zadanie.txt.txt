@@ -1,4 +1,3 @@
-lepszy wyglad admin panel + tabela z wszystkimi artykułami !important
 profil !important
 reset i zmiana hasła
 komentarze ?

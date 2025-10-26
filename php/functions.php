@@ -29,6 +29,7 @@ function getNav($role){
         echo "<button class='hiddenPC' onclick=\"location.href='adminpanel.php'\">Manage Users</button>"; 
         echo "<button class='hiddenPC' onclick=\"location.href='myarticles.php?page=1&perm=admin'\">Manage Articles</button>"; 
         }
+        echo "<button onclick=\"location.href='profile.php'\">Profile</button>";
         echo "<button onclick=\"location.href='logout.php'\">Log out</button>";
     }
     else{
@@ -59,13 +60,13 @@ function getFooter(){
     <script src=\"script.js\"></script>";
 }
 function checkSession($con){
-    if(isset($_SESSION["user_id"])){
-        $id = $_SESSION["user_id"];
+    if(isset($_SESSION["userID"])){
+        $id = $_SESSION["userID"];
         
-        $query = $con->prepare("SELECT * FROM users WHERE id = ?");
+        $query = $con->prepare("SELECT * FROM users u INNER JOIN user_data ud ON ud.userID = u.id  WHERE u.id = ? LIMIT 1");
         $query->bind_param("i", $id);
         $query->execute();
-        $result = $query->get_result(); // INNER JOIN user_data ON user_data.userID = users.ID
+        $result = $query->get_result(); 
 
         if($result && mysqli_num_rows($result) > 0){
             return $result->fetch_assoc();
@@ -91,7 +92,7 @@ function getRole($user){
     return 'none';
 }
 function parseMarkup($article){
-    $article = str_replace(['\#', '\*'], ['__ESC_HASH__', '__ESC_ASTERISK__'], $article);
+    $article = str_replace(['\#', '\*'], ['_ESC_HASH_', '_ESC_STAR_'], $article);
     $article = preg_replace("/^######\s+(.*)$/m","<h6>$1</h6>",$article);
     $article = preg_replace("/^#####\s+(.*)$/m","<h5>$1</h5>",$article);
     $article = preg_replace("/^####\s+(.*)$/m","<h4>$1</h4>",$article);
@@ -100,11 +101,11 @@ function parseMarkup($article){
     $article = preg_replace("/^#\s+(.*)$/m","<h1>$1</h1>",$article);
     $article = preg_replace("/\*\*(.*?)\*\*/",'<b>$1</b>',$article);
     $article = preg_replace("/\*(.*?)\*/","<i>$1</i>",$article);
-    $article = str_replace(['__ESC_HASH__', '__ESC_ASTERISK__'], ['<span>#</span>', '<span>*</span>'], $article);
+    $article = str_replace(['_ESC_HASH_', '_ESC_STAR_'], ['#', '*'], $article);
     return $article;
 }
 function clearMarkup($article){
-    $article = str_replace(['\#', '\*'], ['__ESC_HASH__', '__ESC_ASTERISK__'], $article);
+    $article = str_replace(['\#', '\*'], ['_ESC_HASH_', '_ESC_STAR_'], $article);
     $article = preg_replace("/^######\s+(.*)$/m","$1",$article);
     $article = preg_replace("/^#####\s+(.*)$/m","$1",$article);
     $article = preg_replace("/^####\s+(.*)$/m","$1>",$article);
@@ -113,6 +114,6 @@ function clearMarkup($article){
     $article = preg_replace("/^#\s+(.*)$/m","$1",$article);
     $article = preg_replace("/\*\*(.*?)\*\*/","$1",$article);
     $article = preg_replace("/\*(.*?)\*/","$1",$article);
-    $article = str_replace(['__ESC_HASH__', '__ESC_ASTERISK__'], ['#', '*'], $article);
+    $article = str_replace(['_ESC_HASH_', '_ESC_STAR_'], ['#', '*'], $article);
     return $article;
 }

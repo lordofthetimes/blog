@@ -41,6 +41,10 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
         $query->execute();
         $id = $query->get_result()->fetch_assoc()['id'];
 
+        $date = date("Y-m-d H:i:s");
+        $query = $con->prepare("INSERT INTO user_Data (userID,name.surname,accAge,pfp) VALUES(?,?,?,?,'default.png')");
+        $query->bind_param("issd", $id, $name, $surname,$date);
+        $query->execute();
 
         // mysqli_query($con,"insert into user_data (userid,name,surname,pfp) values ('$id','$name','$surname','default.png')");
         $con->close();

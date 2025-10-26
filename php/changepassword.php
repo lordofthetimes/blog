@@ -4,7 +4,7 @@ require("connection.php");
 include("functions.php");
 $user = checkSession($con);
 if (!$user) {
-    header("Location: login.php");
+    header("Location: ../login.php");
     die;
 }
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
@@ -26,8 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             $userData = mysqli_fetch_assoc($result);
             if ($passwordOld == $userData['password']) {
                 mysqli_query($con, "update users set password = '$passwordNew' where id = '$user[id]' limit 1");
-                $_SESSION['message'] = "Password was changed sucessfully.";
-                header("Location: ../index.php");
+                header("Location: ../profile.php");
                 die;
             } else {
                 echo '<script>alert("Wrong old password!");</script>';

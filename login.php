@@ -20,7 +20,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         $result = $query->get_result();
 
         if($result && $result->num_rows > 0){
-            $_SESSION["user_id"] = $result->fetch_assoc()["id"];
+            $_SESSION["userID"] = $result->fetch_assoc()["id"];
             $con->close();
             header("location: index.php");
             exit;
