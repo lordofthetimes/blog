@@ -9,10 +9,25 @@ function getNav($role){
             <button onclick=\"location.href='contact.php'\">Contact</button>";
     
     if(isUser($role)){
-        echo "<button onclick=\"location.href='myarticles.php'\">My Articles</button>
-        <button onclick=\"location.href='managearticle.php'\">Create Article</button>";
+        echo "<div class='dropdown'>";
+            echo "<button class='dropbtn'>Articles ▼</button>"; 
+            echo "<div class='dropdown-content'>";
+                echo "<button onclick=\"location.href='myarticles.php'\">My Articles</button>"; 
+                echo "<button onclick=\"location.href='managearticle.php'\">Create Article</button>"; 
+            echo "</div>";
+        echo "</div>";
+        echo "<button class='hiddenPC' onclick=\"location.href='myarticles.php'\">My Articles</button>"; 
+        echo "<button class='hiddenPC' onclick=\"location.href='managearticle.php'\">Create Article</button>"; 
         if(isAdmin($role)){
-            echo "<button onclick=\"location.href='adminpanel.php'\">Admin Panel</button>";
+            echo "<div class='dropdown'>";
+            echo "<button class='dropbtn'>Admin Panel ▼</button>"; 
+            echo "<div class='dropdown-content'>";
+                echo "<button onclick=\"location.href='adminpanel.php'\">Manage Users</button>"; 
+                echo "<button onclick=\"location.href='myarticles.php?page=1&perm=admin'\">Manage Articles</button>"; 
+            echo "</div>";
+        echo "</div>";
+        echo "<button class='hiddenPC' onclick=\"location.href='adminpanel.php'\">Manage Users</button>"; 
+        echo "<button class='hiddenPC' onclick=\"location.href='myarticles.php?page=1&perm=admin'\">Manage Articles</button>"; 
         }
         echo "<button onclick=\"location.href='logout.php'\">Log out</button>";
     }

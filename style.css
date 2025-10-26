@@ -334,7 +334,47 @@ nav {
     position: sticky;
     top: 0;
     z-index: 9999;
-    background-color: white; /* make sure nav is visible */
+    background-color: white;
+    box-shadow: 0px 4px 8px 0px rgba(0,0,0,0.2);
+}
+.dropdown {
+    position: relative;
+    display: inline-block; 
+    height: auto;
+    width: 10%;
+}
+.dropdown-content {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 10;
+    display: none;
+    flex-direction: column;
+    width: 100%;
+}
+.dropdown-content button {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    background-color: rgb(235, 235, 235);
+    width: 100%; 
+    border: none;
+    text-align: left;
+    background-color: transparent; /* Remove default button background */
+    cursor: pointer;
+}
+
+/* Hover effect for inner buttons */
+.dropdown-content button:hover {
+    background-color: #ddd;
+}
+
+/* CRITICAL: SHOW THE DROPDOWN ON HOVER */
+.dropdown:hover .dropdown-content {
+    display: flex; /* Use flex to override the 'none' and display the content */
 }
 #logo {
     height: 100px;
@@ -351,25 +391,32 @@ nav {
 }
 
 .nav-buttons button {
-    background-color: transparent;
     border: none;
     color: #000;
     font-size: 16px;
     cursor: pointer;
     transition: 0.3s ease;
     height: 13.5vh;
+}
+.nav-buttons > button{
+    background-color: transparent;
     width: 10%;
 }
-
+.dropbtn{
+    background-color: transparent;
+    width: 100%;
+}
 .nav-buttons button:hover {
-    background-color: rgb(204, 204, 204);
+    background-color: rgb(235, 235, 235);
 }
 #hamburger, #x {
     display: none;
     order: 10;
     align-self: flex-end;
 }
-
+.hiddenPC{
+    display: none;
+}
 /*
  EDIT/CREATE ARTICLE STYLE
 */
@@ -413,37 +460,56 @@ nav {
     height: auto;
     display: flex;
     flex-direction: column;
-    margin-top: 1vh;
+    margin-top: 3%;
     
 }
-.adminpanel div{
+.adminpanel table{
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     width: 70%;
+}
+.adminpanel tr{
+    border-top: none;
+    width: 100%;
     display: flex;
     justify-content: space-around;
     text-align: left;
-    height: 5vh;
-    margin: 0.5vh;
-    background-color: white;
+    transition: background-color 0.3s ease;
+    height: 3em;
 }
 
-.adminpanel div *{
-    border:none;
+.adminpanel tr:nth-child(odd){ 
+    background-color: #f6f6f6; 
+}
+.adminpanel tr:nth-child(even){ 
+    background-color: #e1e1e1; 
+}
+.adminpanel tr:hover {
+  background-color: #d1d1d1;
+}
+.adminpanel td{
+    display: flex;
+    justify-content: flex-start;
     width: 30%;
     font-size: 20px;
 }
+.adminpanel td:nth-child(3n){
+    justify-content: flex-end;
+}
 .adminpanel button{
+    border:none;
     cursor: pointer;
     transition: 0.3s ease;
     background-color: transparent;
-    background-color: white;
+    background-color: none;
     height: 5vh;
+    width: 10vw;
 }
 .adminpanel button:hover {
-    background-color: rgb(204, 204, 204);
+  background-color: rgb(200, 200, 200);
 }
 #adminpagebuttons{
-    margin-left: 0.5%;
     margin-top: 1vh;
+    width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -555,6 +621,12 @@ nav {
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
+    }
+    .dropdown{
+        display: none;
+    }
+    .hiddenPC{
+        display: block;
     }
     .nav-buttons button {
         width: 100%;

@@ -44,11 +44,11 @@ if(isset($_GET['changePerms'])){
 $userCount = $con->query("SELECT COUNT(*) FROM users")->fetch_row()[0];
 
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$perPage = 12;
+$offset = ($page - 1) * $perPage;
 
-$offset = ($page - 1) * 10;
-
-$query = $con->prepare("SELECT * FROM users ORDER BY id ASC LIMIT 10 OFFSET ?");
-$query->bind_param("i", $offset);
+$query = $con->prepare("SELECT * FROM users ORDER BY id ASC LIMIT ? OFFSET ?");
+$query->bind_param("ii", $perPage, $offset);
 $query->execute();
 $result = $query->get_result();
 if(!$result){
@@ -72,14 +72,16 @@ $con->close();
     <?php getNav($role);?>
     <div class="container">
         <main class="adminpanel">
-            <?php 
+        <table>
+            <?php
                 foreach($users as $user) {
                 $login = $user['login'];
                 $userRole = $user['role'];
                 ?>
-                <div>
-                    <span>Login : <?php echo $login; ?></span>
-                    <span>Role : <?php echo $userRole; ?></span>
+                <tr>
+                    <td>Login : <?php echo $login; ?></td>
+                    <td>Role : <?php echo $userRole; ?></td>
+                    <td>
                     <?php
                         if(!isSuperAdmin($userRole)){
                             ?>
@@ -94,14 +96,17 @@ $con->close();
                             <?php
                         }
                     ?>
-                </div>
+                    </td>
+                </tr>
             <?php 
             } 
             ?>
-            <div id="adminpagebuttons">
-                <button <?php echo $page - 1 <=0 ? 'disabled' : ''; ?> onClick="location.href='adminpanel.php?page=<?php echo $page -1; ?>'">Previous</button>
-                <button <?php echo $offset + 10 >= $userCount ? 'disabled' : ''; ?> onClick="location.href='adminpanel.php?page=<?php echo $page + 1; ?>'">Next</button>
-            </div>
+            <tr id="adminpagebuttons">
+                <td><button <?php echo $page - 1 <=0 ? 'disabled' : ''; ?> onClick="location.href='adminpanel.php?page=<?php echo $page -1; ?>'">Previous</button></td>
+                <td></td>
+                <td><button <?php echo $offset + $perPage >= $userCount ? 'disabled' : ''; ?> onClick="location.href='adminpanel.php?page=<?php echo $page + 1; ?>'">Next</button></td>
+        </tr>
+        </table>
         </main>
     </div>
             

@@ -3,20 +3,43 @@ session_start();
 require("php/connection.php");
 require("php/functions.php");
 
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 $user = checkSession($con);
-$ownerID = $user['id'];
-$articleCount = $con->query("SELECT COUNT(*) FROM articles where ownerid=$ownerID")->fetch_row()[0];
+if(!isset($user)){
+    header("location: index.php");
+    exit;
+}
 
 $page = isset($_GET['page']) ? $_GET['page'] : 1;
 $page = $page <= 0 ? 1 : $page;
 $offset = ($page - 1) * 5;
 
-$query = $con->prepare("SELECT * FROM articles WHERE ownerid=? ORDER BY id DESC LIMIT 5 OFFSET ?");
-$query->bind_param("ii",$ownerID, $offset);
-$query->execute();
-$result = $query->get_result();
+$role = $user['role'];
 
-$articles = $result->fetch_all(MYSQLI_ASSOC);
+if(isset($_GET['perm']) && isAdmin($role)){
+    $articleCount = $con->query("SELECT COUNT(*) FROM articles")->fetch_row()[0];
+
+    $query = $con->prepare("SELECT * FROM articles ORDER BY id DESC LIMIT 5 OFFSET ?");
+    $query->bind_param("i", $offset);
+    $query->execute();
+    $result = $query->get_result();
+    
+    $articles = $result->fetch_all(MYSQLI_ASSOC);
+}
+else{
+    $ownerID = $user['id'];
+    $articleCount = $con->query("SELECT COUNT(*) FROM articles where ownerid=$ownerID")->fetch_row()[0];
+
+    $query = $con->prepare("SELECT * FROM articles WHERE ownerid=? ORDER BY id DESC LIMIT 5 OFFSET ?");
+    $query->bind_param("ii",$ownerID, $offset);
+    $query->execute();
+    $result = $query->get_result();
+
+    $articles = $result->fetch_all(MYSQLI_ASSOC);
+}
 
 $con->close();
 ?>
@@ -35,8 +58,8 @@ $con->close();
     ?>
     <div class="container">
         <div id="pagebuttons">
-                <button <?php echo $page - 1 <=0 ? 'disabled' : ''; ?> onClick="location.href='myarticles.php?page=<?php echo $page -1; ?>'">Previous</button>
-                <button <?php echo $offset + 5 >= $articleCount ? 'disabled' : ''; ?> onClick="location.href='myarticles.php?page=<?php echo $page + 1; ?>'">Next</button>
+                <button <?php echo $page - 1 <=0 ? 'disabled' : ''; ?> onClick="location.href='myarticles.php?page=<?php echo $page-1;if(isAdmin($role))echo "&perm=admin";?>'">Previous</button>
+                <button <?php echo $offset + 5 >= $articleCount ? 'disabled' : ''; ?> onClick="location.href='myarticles.php?page=<?php echo $page+1;if(isAdmin($role))echo "&perm=admin";?>'">Next</button>
         </div>
         <main class="myarticles">
             <?php
@@ -53,8 +76,8 @@ $con->close();
             ?>
         </main>
         <div id="pagebuttons">
-                <button <?php echo $page - 1 <=0 ? 'disabled' : ''; ?> onClick="location.href='myarticles.php?page=<?php echo $page -1; ?>'">Previous</button>
-                <button <?php echo $offset + 5 >= $articleCount ? 'disabled' : ''; ?> onClick="location.href='myarticles.php?page=<?php echo $page + 1; ?>'">Next</button>
+                <button <?php echo $page - 1 <=0 ? 'disabled' : ''; ?> onClick="location.href='myarticles.php?page=<?php echo $page-1;if(isAdmin($role))echo "&perm=admin";?>'">Previous</button>
+                <button <?php echo $offset + 5 >= $articleCount ? 'disabled' : ''; ?> onClick="location.href='myarticles.php?page=<?php echo $page+1;if(isAdmin($role))echo "&perm=admin";?>'">Next</button>
         </div>
     </div>
     <?php
