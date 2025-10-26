@@ -6,7 +6,6 @@ html,body {
     margin: 0;
     padding: 0;
     width: 100%;
-    overflow-y: scroll;
     scrollbar-width: none;
     -ms-overflow-style: none;
     scroll-behavior: smooth;
@@ -32,6 +31,11 @@ main {
     flex-wrap: wrap;
     align-content: space-around;
     align-items: center;
+}
+p#date{
+    color: rgb(138, 138, 138);
+    font-size: 15px;
+    height: 4vh;
 }
 /*
     LOGIN STYLES
@@ -85,7 +89,7 @@ main {
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: repeat(3, 1fr);
     gap: 10px;
-    width: 50%;
+    width: 75%;
     height: 100vh;
     margin-top: 0;
 }
@@ -113,6 +117,7 @@ main {
 
     transition: ease-in-out 0.3s;
     color: black;
+    padding-bottom: 1%;
 }
 .index a:hover{
     color: rgb(24, 177, 24);
@@ -122,7 +127,7 @@ main {
     margin-left: 5%;
     margin-top: 1vh;
     display: flex;
-    width: 50%;
+    width: 75%;
     justify-content: space-between;
     align-items: center;
     height: 5vh;
@@ -140,7 +145,43 @@ main {
 #pagebuttons button:hover {
     background-color: rgb(204, 204, 204);
 }
+.mobile{
+    display: none !important;
+}
 
+/*
+    MY ARTICLES STYLES
+*/
+.myarticles{
+    display: flex;
+    flex-direction: column;
+    width: 75vw;
+}
+.myarticles div{
+    background-color: white;
+    width: 74.5vw;
+    margin-bottom: 2.5vw;
+    padding-left: 0.5vw;
+}
+.myarticles div:first-of-type{
+    margin-top: 2.5vw;
+}
+.myarticles button{
+    border: none;
+    cursor: pointer;
+    transition: 0.3s ease;
+    background-color: transparent;
+    background-color: white;
+    height: 5vh;
+    width: auto;
+    min-width: 5vw;
+}
+.myarticles button:hover{
+    background-color: rgb(204, 204, 204);
+}
+.myarticles + #pagebuttons {
+    margin-bottom: 2.5%;
+}
 /*
     ARTICLE STYLES
 */
@@ -157,9 +198,18 @@ article{
     height: auto;
     background-color: white;
 }
-article h2,article p{
-    margin-left: 5%;
-    margin-right: 5%;
+article h1,
+article h2,
+article h3,
+article h4,
+article h5,
+article h6,
+article p{
+    white-space: pre-wrap;
+}
+article{
+    padding-left: 2.5%;
+    padding-right: 2.5%;
 }
 article button{
     border: none;
@@ -169,10 +219,6 @@ article button{
     background-color: white;
     height: 5vh;
     width: 10vh;
-    
-}
-article button:first-of-type{
-    margin-left: 5vh;
 }
 article button:hover{
     background-color: rgb(204, 204, 204);
@@ -284,8 +330,11 @@ footer h1{
 */
 nav {
     display: flex;
-    position: relative;
     padding: 0;
+    position: sticky;
+    top: 0;
+    z-index: 9999;
+    background-color: white; /* make sure nav is visible */
 }
 #logo {
     height: 100px;
@@ -345,7 +394,6 @@ nav {
     border-radius: 10px;
 }
 .managearticle input{
-    
     height: 4.8vh;
     margin-bottom: 0.8vh;
 }
@@ -442,7 +490,10 @@ nav {
         flex-direction: column;
         flex-wrap: nowrap;
         height: auto;
-        margin-bottom: 5vh;
+    }
+    .index p{
+        height: auto;
+        margin-bottom: 2%;
     }
 
     .index div {
@@ -452,13 +503,23 @@ nav {
 
     #pagebuttons{
         width: 50%;
-        margin:auto;
+        margin-left: auto;
+        margin-right: auto;
         margin-top: 3%;
     }
     #pagebuttons button{
     width: 15vw;
-}
-    
+    }
+    .mobile{
+        display: flex !important;
+        margin-bottom: 5%;
+    }
+    /*
+        MY ARTICLES MOBILE STYLE
+    */
+    #pagebuttons{
+        width: 75vw;
+    }
     /*
         ARTICLE MOBILE STYLES
     */
@@ -478,11 +539,8 @@ nav {
         height: auto;
     }
     /*
-        nav MOBILE STYLES
+        NAV MOBILE STYLES
     */
-    nav{
-        position: relative;
-    } 
     .nav-buttons {
         display: flex;
         flex-direction: column;

@@ -1,10 +1,4 @@
-rejestracja i logowanie
-
-administrator i uzytkownik
-
-uzytkownik moze dodawac artykuly oraz edytowac i usuwac swoje artykuly
-
-super administrator nieusuwalny
-
-administrator moze dodawac, usuwac i edytowac artykuly, oraz dodawac/usuwac uprawnienia administratora innym uzytkownikom
-
+lepszy wyglad admin panel + tabela z wszystkimi artykułami !important
+profil !important
+reset i zmiana hasła
+komentarze ?

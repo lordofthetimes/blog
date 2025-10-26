@@ -47,7 +47,6 @@ else if($_SERVER["REQUEST_METHOD"] == "POST"){
 
     if( isset($_POST['id']) && ($ownerID == $user['id'] || isAdmin(getRole($user))) ){
         $id = $_POST['id'];
-
         $query = $con->prepare("UPDATE articles SET title = ?, article = ? WHERE id = ?");
         $query->bind_param("ssi", $title, $article, $id);
         $query->execute();
@@ -55,14 +54,15 @@ else if($_SERVER["REQUEST_METHOD"] == "POST"){
         header("location: article.php?id=".$id);
         exit;
     }
-
-    $query = $con->prepare("INSERT INTO articles (title, article, ownerID) VALUES (?, ?, ?)");
-    $query->bind_param("ssi", $title, $article, $ownerID);
+    $date = date("Y-m-d");
+    $ownerID = $user['id'];
+    $query = $con->prepare("INSERT INTO articles (title, article, ownerID, date) VALUES (?, ?, ?, ?)");
+    $query->bind_param("ssis", $title, $article, $ownerID, $date);
     $query->execute();
 
-    $id = $con->query("SELECT id FROM articles order by id desc limit 1")->fetch_assoc();
+    $id = $con->query("SELECT id FROM articles order by id desc limit 1")->fetch_assoc()['id'];
     $con->close();
-    header("location: article.php?id=".$id['id']);
+    header("location: article.php?id=".$id);
     exit;
 }
 
@@ -93,8 +93,9 @@ $role = getRole($user);
                 if(isset($editarticle)){
                     $title = $editarticle['title'];
                     $article = $editarticle['article'];
+                    $ownerID = $editarticle['ownerID'];
                     echo "<input type=\"hidden\" name=\"id\" value=\"$id\">
-
+                    <input type=\"hidden\" name=\"ownerID\" value=\"$ownerID\">
                     <input type=\"text\" placeholder=\"Title\" value=\"$title\" name=\"title\">
                     <textarea name=\"article\" placeholder=\"Put your entire article here, the area can be resized if prefered\">$article</textarea>
                     <input type=\"submit\" value=\"Save and update\">";
@@ -102,6 +103,9 @@ $role = getRole($user);
                 else{
                 ?>
                     <input type="text" placeholder="Title" name="title">
+                    <?php 
+                    $ownerID = $user['id'];
+                    echo "<input type=\"hidden\" name=\"ownerID\" value=\"$ownerID\">"; ?>
                     <textarea name="article" placeholder="Put your entire article here, the area can be resized if prefered"></textarea>
                     <input type="submit" value="Save and publish">
                 <?php

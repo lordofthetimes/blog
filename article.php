@@ -7,7 +7,8 @@ $user = checkSession($con);
 if(isset($_GET['id'])){
     $id = $_GET['id'];
     
-    $query = $con->prepare("SELECT * FROM articles WHERE id = ?");
+    $query = $con->prepare("SELECT a.id, u.login, a.ownerID, a.title, a.article, a.date 
+    FROM articles a join users u on u.id = a.ownerID WHERE a.id = ?");
     $query->bind_param("i", $id);
     $query->execute();
     $articleResult = $query->get_result();
@@ -17,7 +18,7 @@ if(isset($_GET['id'])){
     }
 }
 else{
-    $articleData = $con->query("SELECT * FROM articles ORDER BY id DESC LIMIT 1")->fetch_assoc();
+    $articleData = $con->query("SELECT a.id, u.login, a.ownerID, a.title, a.article, a.date  FROM articles a join users u on a.ownerID = u.id ORDER BY a.id DESC LIMIT 1")->fetch_assoc();
 }
 ?>
 <!DOCTYPE html>
@@ -37,10 +38,15 @@ else{
              <article>
                 <?php
                 if(isset($articleData)){
-                    echo '<h2>'.$articleData['title'].'</h2>
-                    <p>'.$articleData['article'].'</p>';
+                    echo '<h1>'.$articleData['title'].'</h1>
+                    <p id="date">'.$articleData['login'].' | '.$articleData['date'].'</p>
+                    <p>'.parseMarkup($articleData['article']).'</p>';
                     if (isset($user)) {
+                        // echo "<button onclick=\"location.href='managearticle.php?id=$id'\">Comment</button>";
                         if($articleData['ownerID'] == $user['id'] || isAdmin(getRole($user))){
+                            if(!isset($id)){
+                                $id = $articleData['id'];
+                            }
                             echo "
                                 <button onclick=\"location.href='managearticle.php?id=$id'\">Edit</button>
                                 <button onclick=\"location.href='managearticle.php?id=$id&delete=true'\">Remove</button>";

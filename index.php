@@ -11,7 +11,8 @@ $page = isset($_GET['page']) ? $_GET['page'] : 1;
 $page = $page <= 0 ? 1 : $page;
 $offset = ($page - 1) * 12;
 
-$query = $con->prepare("SELECT * FROM articles ORDER BY id DESC LIMIT 12 OFFSET ?");
+$query = $con->prepare("SELECT a.id, u.login, a.ownerID, a.title, a.article, a.date 
+FROM articles a join users u on u.id = a.ownerID ORDER BY a.id DESC LIMIT 12 OFFSET ?");
 $query->bind_param("i", $offset);
 $query->execute();
 $result = $query->get_result();
@@ -42,13 +43,18 @@ $con->close();
             <?php
             foreach($articles as $article){
                 echo '<div>
-                <h3>'.substr($article['title'],0,30).'</h3>
-                <p>'.substr($article['article'],0,100).'...</p>
+                <h3>'.substr($article['title'],0,50).'</h3>
+                <p id="date">'.$article['login'].' | '.$article['date'].'</p>
+                <p>'.substr(clearMarkup($article['article']),0,100).'...</p>
                 <a href="article.php?id='.$article['id'].'">Read more →</a>
              </div>';
             }
             ?>
         </main>
+        <div class="mobile" id="pagebuttons">
+                <button <?php echo $page - 1 <=0 ? 'disabled' : ''; ?> onClick="location.href='index.php?page=<?php echo $page -1; ?>'">Previous</button>
+                <button <?php echo $offset + 12 >= $articleCount ? 'disabled' : ''; ?> onClick="location.href='index.php?page=<?php echo $page + 1; ?>'">Next</button>
+        </div>
     </div>
     <?php
     getFooter();
