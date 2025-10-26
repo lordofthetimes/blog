@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Czas generowania: 23 Paź 2025, 15:25
--- Wersja serwera: 10.4.27-MariaDB
--- Wersja PHP: 8.1.12
+-- Host: localhost
+-- Generation Time: Oct 27, 2025 at 12:09 AM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.0.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,13 +18,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Baza danych: `blog`
+-- Database: `blog`
 --
 
 -- --------------------------------------------------------
 
 --
--- Struktura tabeli dla tabeli `articles`
+-- Table structure for table `articles`
 --
 
 CREATE TABLE `articles` (
@@ -36,7 +36,7 @@ CREATE TABLE `articles` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Zrzut danych tabeli `articles`
+-- Dumping data for table `articles`
 --
 
 INSERT INTO `articles` (`id`, `title`, `article`, `ownerID`, `date`) VALUES
@@ -65,7 +65,7 @@ INSERT INTO `articles` (`id`, `title`, `article`, `ownerID`, `date`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktura tabeli dla tabeli `users`
+-- Table structure for table `users`
 --
 
 CREATE TABLE `users` (
@@ -76,7 +76,7 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Zrzut danych tabeli `users`
+-- Dumping data for table `users`
 --
 
 INSERT INTO `users` (`id`, `login`, `password`, `role`) VALUES
@@ -92,48 +92,102 @@ INSERT INTO `users` (`id`, `login`, `password`, `role`) VALUES
 (10, 'I<3BANANAS', 'I<3BANANAS', 'user'),
 (11, 'admin', 'adminPass!@#$%', 'admin');
 
+-- --------------------------------------------------------
+
 --
--- Indeksy dla zrzutów tabel
+-- Table structure for table `user_data`
+--
+
+CREATE TABLE `user_data` (
+  `userID` int(11) NOT NULL,
+  `name` text DEFAULT NULL,
+  `surname` text DEFAULT NULL,
+  `age` int(11) DEFAULT NULL,
+  `gender` varchar(10) DEFAULT NULL,
+  `pfp` varchar(255) DEFAULT NULL,
+  `dataID` int(11) NOT NULL,
+  `bio` text DEFAULT NULL,
+  `accAge` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `user_data`
+--
+
+INSERT INTO `user_data` (`userID`, `name`, `surname`, `age`, `gender`, `pfp`, `dataID`, `bio`, `accAge`) VALUES
+(1, 'Adam', 'Poleszczuk', 17, 'Male', 'default.png', 1, 'Testowe bio jest dluzsze teraz, bardzo fajne super jest Testowe bio jest dluzsze teraz, bardzo fajne super jest', '2025-09-27 19:57:11'),
+(2, 'Mary', 'Johnson', 30, 'Female', 'default.png', 2, NULL, NULL),
+(3, 'John', 'Williams', 22, 'Male', 'default.png', 3, NULL, NULL),
+(4, 'Patricia', 'Brown', 28, 'Female', 'default.png', 4, NULL, NULL),
+(5, 'Robert', 'Jones', 26, 'Male', 'default.png', 5, NULL, NULL),
+(6, 'Linda', 'Garcia', 33, 'Female', 'default.png', 6, NULL, NULL),
+(7, 'Michael', 'Miller', 29, 'Male', 'default.png', 7, NULL, NULL),
+(8, 'Elizabeth', 'Davis', 31, 'Female', 'default.png', 8, NULL, NULL),
+(9, 'William', 'Martinez', 24, 'Male', 'default.png', 9, NULL, NULL),
+(10, 'Banana', 'Lover', 27, 'Female', 'default.png', 10, NULL, NULL),
+(11, 'David', 'Lopez', 23, 'Male', 'default.png', 11, NULL, NULL);
+
+--
+-- Indexes for dumped tables
 --
 
 --
--- Indeksy dla tabeli `articles`
+-- Indexes for table `articles`
 --
 ALTER TABLE `articles`
   ADD PRIMARY KEY (`id`),
   ADD KEY `ownerID` (`ownerID`);
 
 --
--- Indeksy dla tabeli `users`
+-- Indexes for table `users`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`);
 
 --
--- AUTO_INCREMENT dla zrzuconych tabel
+-- Indexes for table `user_data`
+--
+ALTER TABLE `user_data`
+  ADD PRIMARY KEY (`dataID`),
+  ADD KEY `userID` (`userID`);
+
+--
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT dla tabeli `articles`
+-- AUTO_INCREMENT for table `articles`
 --
 ALTER TABLE `articles`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
--- AUTO_INCREMENT dla tabeli `users`
+-- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
--- Ograniczenia dla zrzutów tabel
+-- AUTO_INCREMENT for table `user_data`
+--
+ALTER TABLE `user_data`
+  MODIFY `dataID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
+--
+-- Constraints for dumped tables
 --
 
 --
--- Ograniczenia dla tabeli `articles`
+-- Constraints for table `articles`
 --
 ALTER TABLE `articles`
   ADD CONSTRAINT `articles_ibfk_1` FOREIGN KEY (`ownerID`) REFERENCES `users` (`id`);
+
+--
+-- Constraints for table `user_data`
+--
+ALTER TABLE `user_data`
+  ADD CONSTRAINT `user_data_ibfk_1` FOREIGN KEY (`userID`) REFERENCES `users` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
