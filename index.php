@@ -10,9 +10,10 @@ $articleCount = $con->query("SELECT COUNT(*) FROM articles")->fetch_row()[0];
 $page = isset($_GET['page']) ? $_GET['page'] : 1;
 $page = $page <= 0 ? 1 : $page;
 $offset = ($page - 1) * 12;
-
-$query = $con->prepare("SELECT a.id, u.login, a.ownerID, a.title, a.article, a.date 
-FROM articles a join users u on u.id = a.ownerID ORDER BY a.id DESC LIMIT 12 OFFSET ?");
+$query = $con->prepare("SELECT c.category,a.image,a.id,d.pfp, u.login, a.ownerID, a.title, a.article, a.date 
+FROM articles a join users u on u.id = a.ownerID join categories c on a.categoryID=c.categoryID 
+JOIN user_data d on d.userID = u.id
+ORDER BY a.id DESC LIMIT 12 OFFSET ?");
 $query->bind_param("i", $offset);
 $query->execute();
 $result = $query->get_result();
@@ -20,6 +21,8 @@ $result = $query->get_result();
 $articles = $result->fetch_all(MYSQLI_ASSOC);
 
 $con->close();
+
+$role= getRole($user);
 ?>
 <!DOCTYPE html>
 <html lang="pl">
@@ -32,7 +35,7 @@ $con->close();
 </head>
 <body>
     <?php
-    getNav(getRole($user));
+    getNav($role);
     ?>
     <div class="container">
         <div id="pagebuttons">
@@ -43,9 +46,16 @@ $con->close();
             <?php
             foreach($articles as $article){
                 echo '<div>
+                <div class="article-image" style="background-image:url(\'static/'.$article['image'].'\')">
+                </div>
                 <h3>'.substr($article['title'],0,50).'</h3>
-                <p id="date">'.$article['login'].' | '.$article['date'].'</p>
-                <p>'.substr(clearMarkup($article['article']),0,100).'...</p>
+                <div class=index-article>
+                    <img src="static/pfp/'.$article['pfp'].'">
+                    <div id="index-article-data">
+                        <p id="date">'.$article['login'].'</p>
+                        <p id="date">'.$article['date'].' | '.$article['category'].'</p>
+                    </div>
+                </div>
                 <a href="article.php?id='.$article['id'].'">Read more →</a>
              </div>';
             }
@@ -57,7 +67,7 @@ $con->close();
         </div>
     </div>
     <?php
-    getFooter();
+    getFooter($role);
     ?>
 </body>
 </html>

@@ -1,3 +1,4 @@
-profil !important
-reset i zmiana hasła
-komentarze ?
+upload zdjęć do profilu oraz artykułów (multiupload z validacja)
+sortowanie po kategoriach
+reset hasła
+

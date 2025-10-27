@@ -5,6 +5,7 @@ require("php/functions.php");
 
 $user = checkSession($con);
 $con->close();
+$role = getRole($user);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -16,7 +17,7 @@ $con->close();
 </head>
 <body>
     <?php
-    getNav(getRole($user));
+    getNav($role);
     ?>
     <div class="container">
         <main class="contact">
@@ -42,7 +43,7 @@ $con->close();
         
     </div>
     <?php
-    getFooter();
+    getFooter($role);
     ?>
 </body>
 </html>

@@ -16,6 +16,7 @@ if(!isAdmin($role)){
 
 if(isset($_GET['changePerms'])){
     $login = $_GET['changePerms'];
+    $page = $_GET['page'];
 
     if(isset($login)){
         $query = $con->prepare("SELECT * FROM users WHERE login=? limit 1");
@@ -35,7 +36,7 @@ if(isset($_GET['changePerms'])){
                 $query = $con->prepare("UPDATE users SET role = ? WHERE id = ?");
                 $query->bind_param("si", $setRole, $changedUser['id']);
                 $query->execute();
-                header("location: adminpanel.php");
+                header("location: adminpanel.php?page=$page");
                 exit;
             }
         }
@@ -73,19 +74,24 @@ $con->close();
     <div class="container">
         <main class="adminpanel">
         <table>
+            <tr>
+                <td><b>Login</b></td>
+                <td><b>Role</b</td>
+                <td><b>Change role</b</td>
+            </tr>
             <?php
                 foreach($users as $user) {
                 $login = $user['login'];
                 $userRole = $user['role'];
                 ?>
                 <tr>
-                    <td>Login : <?php echo $login; ?></td>
-                    <td>Role : <?php echo $userRole; ?></td>
+                    <td><?php echo $login; ?></td>
+                    <td><?php echo $userRole; ?></td>
                     <td>
                     <?php
                         if(!isSuperAdmin($userRole)){
                             ?>
-                            <button onClick="location.href='adminpanel.php?changePerms=<?php echo $login; ?>'">
+                            <button onClick="location.href='adminpanel.php?page=<?php echo $page; ?>&changePerms=<?php echo $login; ?>'">
                                 <?= isAdmin($userRole) ? "Remove admin" : "Add admin"; ?>
                             </button>
                             <?php

@@ -19,7 +19,12 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
         $user['bio'] = $_POST['bio'];
     }
 }
-
+if(isset($_GET['mode'])){
+    $mode = $_GET['mode'];
+}
+else{
+    $mode = 'none';
+}
 $query = $con->prepare("SELECT count(*) FROM articles WHERE ownerID = ?");
 $query->bind_param("i",$user['id']);
 $query->execute();
@@ -35,6 +40,8 @@ $query->bind_param("i",$user['id']);
 $query->execute();
 $accAge = $query->get_result()->fetch_row()[0];
 $con->close();
+
+$role = getRole($user);
 ?>
 <!DOCTYPE html>
 <html lang="pl">
@@ -47,7 +54,7 @@ $con->close();
 </head>
 <body>
     <?php
-    getNav(getRole($user));
+    getNav($role);
     ?>
     <div class="container">
         <main class="profile">
@@ -56,7 +63,7 @@ $con->close();
                     <div>Total Articles: <?php echo $articlesCount;?></div>
                     <div>Account Age: <?php echo $accAge;?> days</div>
                     <?php
-                    if($_GET['mode'] == 'editbio'){
+                    if($mode == 'editbio'){
                     ?>
                         <form method='post' action='profile.php'>
                             <textarea name='bio'><?php echo $user['bio'];?></textarea>
@@ -74,7 +81,7 @@ $con->close();
                 </div>
                 <div id='user'>
                     <?php
-                    if($_GET['mode'] == 'edituser'){
+                    if($mode == 'edituser'){
                     ?>
                     <?php
                     }
@@ -90,13 +97,13 @@ $con->close();
                     ?>
                 </div>
                 <aside>
-                    <img src="static/<?php echo $user['pfp']; ?>" alt="Profile picture" width="150vw" height="150vh">
+                    <img src="static/pfp/<?php echo $user['pfp']; ?>" alt="Profile picture" width="150vw" height="150vh">
                     <button onClick="location.href='php/changepassword.php'">Change password</button>
                 </aside>
         </main>
     </div>
     <?php
-    getFooter();
+    getFooter($role);
     ?>
 </body>
 </html>

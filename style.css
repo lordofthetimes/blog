@@ -11,10 +11,6 @@ html,body {
     scroll-behavior: smooth;
 }
 
-div {
-    height: 80%;
-}
-
 .container {
     width: 100%;
     display: flex;
@@ -36,6 +32,10 @@ p#date{
     color: rgb(138, 138, 138);
     font-size: 15px;
     height: 4vh;
+    padding-top: 0;
+    margin-top: 0;
+    margin: 0;
+    padding: 0;
 }
 /*
     LOGIN STYLES
@@ -90,10 +90,12 @@ p#date{
     grid-template-rows: repeat(3, 1fr);
     gap: 10px;
     width: 75%;
-    height: 100vh;
-    margin-top: 0;
+    min-height: 100vh;
+    height: auto;
+    margin-top: 2vh;
+    margin-bottom: 4vh;
 }
-.index div {
+.index > div {
     text-align: center;
     display: flex;
     align-items: center;
@@ -102,7 +104,13 @@ p#date{
     min-width: 0;
     min-height: 0;
     background-color: white;
-    height: 26vh;
+    height: 40vh;
+    transition: 0.1s ease;
+}
+.index .article-image{
+    height: 20vh;
+    width: 100%;
+    background-size: cover;
 }
 .index p{
     padding: 0;
@@ -111,10 +119,15 @@ p#date{
 }
 .index > div > h3{
     height: 5vh;
+    margin-bottom: 0.3em;
+    margin-top: 0.3em;
+}
+.index > div:hover{
+    transform: scale(1.035);
+    transition: 0.2s ease;
 }
 
 .index a{
-
     transition: ease-in-out 0.3s;
     color: black;
     padding-bottom: 1%;
@@ -123,6 +136,22 @@ p#date{
     color: rgb(24, 177, 24);
 }
 
+.index .index-article{
+    width: 80%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+.index .index-article img{
+    height: 50px;
+    width: 50px;
+}
+.index #index-article-data{
+    flex-direction: column;
+    text-align: left;
+    padding-left: 4;
+    margin-left: 5%;
+}
 #pagebuttons{
     margin-left: 5%;
     margin-top: 1vh;
@@ -138,12 +167,19 @@ p#date{
     height: 5vh;
     width: 7vw;
     cursor: pointer;
+    color: #fff;
     transition: 0.3s ease;
-    background-color: transparent;
-    background-color: white;
+    background-color: rgb(0, 0, 0);
 }
 #pagebuttons button:hover {
-    background-color: rgb(204, 204, 204);
+    color: rgb(24, 177, 24);
+    background-color: rgb(34, 34, 34);
+}
+#pagebuttons button:disabled{
+    background-color: rgb(82, 82, 82);
+}
+#pagebuttons button:disabled:hover{
+    color: white;
 }
 .mobile{
     display: none !important;
@@ -170,14 +206,15 @@ p#date{
     border: none;
     cursor: pointer;
     transition: 0.3s ease;
-    background-color: transparent;
-    background-color: white;
+    background-color: black;
+    color: white;
     height: 5vh;
     width: auto;
     min-width: 5vw;
 }
 .myarticles button:hover{
-    background-color: rgb(204, 204, 204);
+    background-color: rgb(34, 34, 34);
+    color: #118d00;
 }
 .myarticles + #pagebuttons {
     margin-bottom: 2.5%;
@@ -197,13 +234,23 @@ article{
     width: 60vw;
     height: auto;
     background-color: white;
+    font-size: 20px
+}
+article h1:first-of-type{
+    text-decoration: underline;
+    text-decoration-color: #118d00;
+
 }
 article h1,
 article h2,
 article h3,
 article h4,
 article h5,
-article h6,
+article h6{
+    text-decoration: underline;
+    text-decoration-color: #118d00;
+    white-space: pre-wrap;
+}
 article p{
     white-space: pre-wrap;
 }
@@ -215,13 +262,14 @@ article button{
     border: none;
     cursor: pointer;
     transition: 0.3s ease;
-    background-color: transparent;
-    background-color: white;
+    background-color: black;
+    color: white;
     height: 5vh;
     width: 10vh;
 }
 article button:hover{
-    background-color: rgb(204, 204, 204);
+    background-color: rgb(34, 34, 34);
+    color: #118d00;
 }
 
 /*
@@ -352,10 +400,6 @@ article button:hover{
 .contact a {
     color: #000;
 }
-
-
-
-
 ul {
     margin-left: 15%;
     list-style-type: none;
@@ -416,6 +460,18 @@ nav {
     height: auto;
     width: 10%;
 }
+.dropdown-content button {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    background-color: rgb(235, 235, 235);
+    width: 100%; 
+    border: none;
+    text-align: left;
+    background-color: transparent;
+    cursor: pointer;
+    height: auto;
+}
 .dropdown-content {
     position: absolute;
     top: 100%;
@@ -427,17 +483,6 @@ nav {
     display: none;
     flex-direction: column;
     width: 100%;
-}
-.dropdown-content button {
-    color: black;
-    padding: 12px 16px;
-    text-decoration: none;
-    background-color: rgb(235, 235, 235);
-    width: 100%; 
-    border: none;
-    text-align: left;
-    background-color: transparent;
-    cursor: pointer;
 }
 
 .dropdown-content button:hover {
@@ -466,19 +511,22 @@ nav {
     color: #000;
     font-size: 16px;
     cursor: pointer;
-    transition: 0.3s ease;
-    height: 13.5vh;
+    transition: background-color 0.3s ease, border 0.1s ease;
 }
 .nav-buttons > button{
     background-color: transparent;
     width: 10%;
+    height: 13.5vh;
 }
+
 .dropbtn{
     background-color: transparent;
     width: 100%;
+    height: 13.5vh;
 }
 .nav-buttons button:hover {
     background-color: rgb(235, 235, 235);
+    border-bottom: 3px solid #118d00;
 }
 #hamburger, #x {
     display: none;
@@ -517,6 +565,13 @@ nav {
 }
 .managearticle input[type="submit"]{
     width: 10%;
+    color: white;
+    background-color: rgb(0, 0, 0);
+    transition: 0.3s ease;
+}
+.managearticle input[type="submit"]:hover{
+    color: rgb(24, 177, 24);
+    background-color: rgb(34, 34, 34);
 }
 .managearticle textarea{
     margin-bottom: 0.8vh;
@@ -532,6 +587,7 @@ nav {
     display: flex;
     flex-direction: column;
     margin-top: 3%;
+    margin-bottom: 4vh;
     
 }
 .adminpanel table{
@@ -557,6 +613,10 @@ nav {
 .adminpanel tr:hover {
   background-color: #d1d1d1;
 }
+.adminpanel tr:first-of-type{
+    background-color: black;
+    color: white;
+}
 .adminpanel td{
     display: flex;
     justify-content: flex-start;
@@ -572,11 +632,12 @@ nav {
     transition: 0.3s ease;
     background-color: transparent;
     background-color: none;
-    height: 5vh;
+    height: 100%;
     width: 10vw;
+    text-align: right;
 }
 .adminpanel button:hover {
-  background-color: rgb(200, 200, 200);
+    background-color: rgb(204, 204, 204);
 }
 #adminpagebuttons{
     margin-top: 1vh;
@@ -584,12 +645,25 @@ nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: 5vh;
+    height: 7vh;
+}
+#adminpagebuttons button{
+    text-align: center;
+    height: 7vh;
+    transition: 0.3s ease;
+    color: white;
+    background-color: rgb(0, 0, 0);
 }
 #adminpagebuttons button:hover {
-    background-color: rgb(204, 204, 204);
+    color: rgb(24, 177, 24);
+    background-color: rgb(34, 34, 34);
 }
-
+#adminpagebuttons button:disabled{
+    background-color: rgb(82, 82, 82);
+}
+#adminpagebuttons button:disabled:hover{
+    color: white;
+}
 @media only screen and (max-width: 750px) {
     /* 
     MAIN MOBILE STYLES 
@@ -741,14 +815,36 @@ nav {
     .adminpanel > div > *{
         width: 100%;
     }
-    #adminpagebuttons > button{
-        width: 30%;
+    #adminpagebuttons button{
+        width: 15vw;
     }
     #adminpagebuttons{
         margin-bottom: 1vh;
         padding-top: 0;
     }
-
+    /*
+        MANAGE ARTICLE MOBILE STYLES
+    */
+    .managearticle input[type='submit']{
+        width: auto;
+    }
+    /*
+        PROFILE MOBILE STYLES
+    */
+    .profile{
+        flex-direction: column-reverse;
+        margin-top: 5vh;
+    }
+    .profile div,.profile #account,.profile aside{
+        margin: 1vh;
+        width: 80%;
+        height: auto;
+        margin-bottom: 2vh;
+    }
+    .profile #account div,.profile div div{
+        width: 100%;
+        height: auto;
+    }
 }
 /* 
     SCROLLBAR REMOVAL STYLES
@@ -782,5 +878,5 @@ nav {
 }
 
 #scroll:hover {
-  background-color: #118d00; /* Add a dark-grey background on hover */
+  background-color: #118d00;
 }

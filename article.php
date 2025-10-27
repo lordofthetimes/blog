@@ -7,8 +7,8 @@ $user = checkSession($con);
 if(isset($_GET['id'])){
     $id = $_GET['id'];
     
-    $query = $con->prepare("SELECT a.id, u.login, a.ownerID, a.title, a.article, a.date 
-    FROM articles a join users u on u.id = a.ownerID WHERE a.id = ?");
+    $query = $con->prepare("SELECT c.category,a.id, u.login, a.ownerID, a.title, a.article, a.date 
+    FROM articles a join users u on u.id = a.ownerID join categories c on a.categoryID=c.categoryID WHERE a.id = ?");
     $query->bind_param("i", $id);
     $query->execute();
     $articleResult = $query->get_result();
@@ -18,8 +18,11 @@ if(isset($_GET['id'])){
     }
 }
 else{
-    $articleData = $con->query("SELECT a.id, u.login, a.ownerID, a.title, a.article, a.date  FROM articles a join users u on a.ownerID = u.id ORDER BY a.id DESC LIMIT 1")->fetch_assoc();
+    $articleData = $con->query("SELECT c.category, a.id, u.login, a.ownerID, a.title, a.article, a.date  
+    FROM articles a join users u on a.ownerID = u.id join categories c on a.categoryID=c.categoryID 
+    ORDER BY a.id DESC LIMIT 1")->fetch_assoc();
 }
+$role = getRole($user);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -31,7 +34,7 @@ else{
 </head>
 <body>
     <?php
-    getNav(getRole($user));
+    getNav($role);
     ?>
     <div class="container">
         <main class="article">
@@ -39,7 +42,8 @@ else{
                 <?php
                 if(isset($articleData)){
                     echo '<h1>'.$articleData['title'].'</h1>
-                    <p id="date">'.$articleData['login'].' | '.$articleData['date'].'</p>
+                    <p id="date">'.$articleData['login'].'</p>
+                    <p id="date">'.$articleData['date'].' | '.$articleData['category'].'</p>
                     <p>'.parseMarkup($articleData['article']).'</p>';
                     if (isset($user)) {
                         // echo "<button onclick=\"location.href='managearticle.php?id=$id'\">Comment</button>";
@@ -62,7 +66,7 @@ else{
         </main>
     </div>
     <?php
-    getFooter();
+    getFooter($role);
     ?>
 </body>
 </html>

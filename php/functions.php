@@ -40,7 +40,7 @@ function getNav($role){
         <img id='x' src='static/x.png' alt='x'>
         </nav>";
 }
-function getFooter(){
+function getFooter($role){
     echo "<footer>
         <h1>HTML Structure</h1>
         <ul>
@@ -48,7 +48,12 @@ function getFooter(){
             <li><span></span></li>
             <li><a href='index.php'>All articles</a></li>
             <li><a href='article.php'>Latest article</a></li>
-        </ul>
+            ";
+    if(isUser($role)){
+        echo "<li><a href='myarticles.php'>My Articles</a></li>
+              <li><a href='managearticle.php'>Create Article</a></li>";
+    }
+    echo "</ul>
         <ul>
             <li>Information</li>
             <li><span></span></li>

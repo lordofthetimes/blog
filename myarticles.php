@@ -42,6 +42,7 @@ else{
 }
 
 $con->close();
+$role = getRole($user);
 ?>
 <!DOCTYPE html>
 <html lang="pl">
@@ -54,7 +55,7 @@ $con->close();
 </head>
 <body>
     <?php
-    getNav(getRole($user));
+    getNav($role);
     ?>
     <div class="container">
         <div id="pagebuttons">
@@ -81,7 +82,7 @@ $con->close();
         </div>
     </div>
     <?php
-    getFooter();
+    getFooter($role);
     ?>
 </body>
 </html>
