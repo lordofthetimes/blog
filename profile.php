@@ -42,6 +42,19 @@ $accAge = $query->get_result()->fetch_row()[0];
 $con->close();
 
 $role = getRole($user);
+
+if(isset($_GET['alert'])){
+    if($_GET['alert'] == 'ERR_FILE_SIZE'){
+        echo "<script>alert('File size too large. Mazimum size is 5MB!');</script>";
+    }
+    else if($_GET['alert'] == 'ERR_FILE_EXT'){
+        echo "<script>alert('Wrong file extension, please send .jpg, .jpeg, .png, .gif, .webp, .svg or .gif file!');</script>";
+    }
+    else if($_GET['alert'] == 'ERR_UPLOAD_FAIL'){
+        echo "<script>alert('Uploading the file has failed!');</script>";
+    }
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="pl">
@@ -97,8 +110,12 @@ $role = getRole($user);
                     ?>
                 </div>
                 <aside>
-                    <img src="static/pfp/<?php echo $user['pfp']; ?>" alt="Profile picture" width="150vw" height="150vh">
-                    <button onClick="location.href='php/changepassword.php'">Change password</button>
+                    <img src="static/pfp/<?php echo $user['pfp']; ?>" alt="Profile picture">
+                    <form action='upload.php?upload=profile&old=<?php echo $user['pfp']; ?>' method="POST" enctype="multipart/form-data">
+                        <input id="upload" type="file" name="upload" required>
+                        <button type="button" onCLick='document.getElementById("upload").click();'>Select new PFP</button>
+                        <button type="submit"> Upload PFP</button>
+                    </form>
                 </aside>
         </main>
     </div>

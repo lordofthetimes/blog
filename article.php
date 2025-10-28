@@ -7,7 +7,7 @@ $user = checkSession($con);
 if(isset($_GET['id'])){
     $id = $_GET['id'];
     
-    $query = $con->prepare("SELECT c.category,a.id, u.login, a.ownerID, a.title, a.article, a.date 
+    $query = $con->prepare("SELECT c.category, a.id, a.image, u.login, a.ownerID, a.title, a.article, a.date 
     FROM articles a join users u on u.id = a.ownerID join categories c on a.categoryID=c.categoryID WHERE a.id = ?");
     $query->bind_param("i", $id);
     $query->execute();
@@ -18,7 +18,7 @@ if(isset($_GET['id'])){
     }
 }
 else{
-    $articleData = $con->query("SELECT c.category, a.id, u.login, a.ownerID, a.title, a.article, a.date  
+    $articleData = $con->query("SELECT c.category, a.id,a.image, u.login, a.ownerID, a.title, a.article, a.date  
     FROM articles a join users u on a.ownerID = u.id join categories c on a.categoryID=c.categoryID 
     ORDER BY a.id DESC LIMIT 1")->fetch_assoc();
 }
@@ -41,7 +41,8 @@ $role = getRole($user);
              <article>
                 <?php
                 if(isset($articleData)){
-                    echo '<h1>'.$articleData['title'].'</h1>
+                    echo '<div class="article-image" style="background-image:url(\'static/articles/'.$articleData['image'].'\')"></div>
+                    <h1>'.$articleData['title'].'</h1>
                     <p id="date">'.$articleData['login'].'</p>
                     <p id="date">'.$articleData['date'].' | '.$articleData['category'].'</p>
                     <p>'.parseMarkup($articleData['article']).'</p>';

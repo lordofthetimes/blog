@@ -1,4 +1,0 @@
-upload zdjęć do profilu oraz artykułów (multiupload z validacja)
-sortowanie po kategoriach
-reset hasła
-
